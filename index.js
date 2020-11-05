@@ -1,9 +1,9 @@
 /*
 */
 
-const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes,nextISSTimesForMyLocation } = require('./iss');
+const { nextISSTimesForMyLocation } = require('./iss');
 
-const testCallback = (error, passData) => {
+const testCallback = (error, data) => {
   if (error) {
     console.log("It didn't work!", error);
     return;
@@ -31,7 +31,7 @@ const testCallback = (error, passData) => {
 // fetchISSFlyOverTimes(testCoords, testCallback)
 
 
-const passData = [ 
+const testData = [ 
   { duration: 569, risetime: 1604637656 },
   { duration: 649, risetime: 1604643405 },
   { duration: 562, risetime: 1604649292 },
@@ -39,4 +39,21 @@ const passData = [
   { duration: 603, risetime: 1604661021 } ];
 
 
-nextISSTimesForMyLocation(testData, testCallback )
+// nextISSTimesForMyLocation(testCallback)
+
+const printPassTimes = function(passTimes) {
+  for (const pass of passTimes) {
+    const datetime = new Date(0);
+    datetime.setUTCSeconds(pass.risetime);
+    const duration = pass.duration;
+    console.log(`Next pass at ${datetime} for ${duration} seconds!`);
+  }
+};
+
+nextISSTimesForMyLocation((error, passTimes) => {
+  if (error) {
+    return console.log("It didn't work!", error);
+  }
+  // success, print out the deets!
+  printPassTimes(passTimes);
+});
