@@ -92,14 +92,6 @@ const fetchISSFlyOverTimes = function (coords, callback) {
 };
 
 
-const passData = [
-  { duration: 569, risetime: 1604637656 },
-  { duration: 649, risetime: 1604643405 },
-  { duration: 562, risetime: 1604649292 },
-  { duration: 517, risetime: 1604655194 },
-  { duration: 603, risetime: 1604661021 }];
-
-
   const nextISSTimesForMyLocation = function(callback) {
     fetchMyIP((error, ip) => {
       if (error) {
@@ -125,91 +117,5 @@ const passData = [
 
 
 module.exports = {
-  // fetchMyIP,
-  // fetchCoordsByIP,
-  // fetchISSFlyOverTimes,
   nextISSTimesForMyLocation
 };
-
-
-
-
-//CALL BACK HELL
-
- // const fetchMyIP = function (callback) {
-  //   // use request to fetch IP address from JSON API
-
-  //   request('https://api.ipify.org?format=json', (error, response, body) => {
-  //     if (error) {
-  //       callback(error, null);
-  //       return;
-
-  //     }
-
-  //     if (response.statusCode !== 200) {
-  //       const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
-  //       callback(Error(msg), null);
-  //       return;
-  //     }
-
-  //     const data = JSON.parse(body);
-  //     if (data.length !== 0) {
-  //       const ipAddr = data.ip;
-  //       // console.log(ipAddr)
-
-  //       const fetchCoordsByIP = function (ip, callback) {
-  //         request(`https://freegeoip.app/json/${ip}`, (error, response, body) => {
-  //           if (error) {
-  //             callback(error, null);
-  //             return;
-  //           } else if (response.statusCode !== 200) {
-  //             const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
-  //             callback(Error(msg), null);
-  //             return;
-  //           } else {
-
-
-  //             const data = JSON.parse(body);
-  //             if (data.length !== 0) {
-  //               const coords = {
-  //                 lat: data.latitude,
-  //                 lon: data.longitude
-  //               };
-
-
-  //               const fetchISSFlyOverTimes = function (coords, callback) {
-  //                 request(`http://api.open-notify.org/iss-pass.json?lat=${coords.lat}&lon=${coords.lon}`, (error, response, body) => {
-  //                   if (error) {
-  //                     callback(error, null);
-  //                     return;
-  //                   } else if (response.statusCode !== 200) {
-  //                     const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
-  //                     callback(Error(msg), null);
-  //                     return;
-  //                   }
-  //                   // Array of objects
-  //                   const passesData = JSON.parse(body).response;
-  //                   // console.log('RAW', data)
-
-  //                   callback(null, passesData);
-
-  //                 });
-  //               };
-
-
-
-  //               return;
-  //             }
-  //           }
-  //         });
-  //       };
-
-
-
-  //     }
-  //     callback('REQUEST: No Data found', null);
-  //   });
-
-
-  // };
-
