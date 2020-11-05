@@ -1,7 +1,15 @@
 /*
 */
 
-const { fetchMyIP, fetchCoordsByIP } = require('./iss');
+const { fetchMyIP, fetchCoordsByIP, fetchISSFlyOverTimes,nextISSTimesForMyLocation } = require('./iss');
+
+const testCallback = (error, passData) => {
+  if (error) {
+    console.log("It didn't work!", error);
+    return;
+  }
+  console.log('PassTimes:', data);
+}
 
 // fetchMyIP((error, ip) => {
 //   if (error) {
@@ -11,10 +19,24 @@ const { fetchMyIP, fetchCoordsByIP } = require('./iss');
 //   console.log('It worked! Returned IP:', ip);
 // });
 
-// fetchCoordsByIP('8.8.8.8', (error, data) => {
+// fetchCoordsByIP(ip, (error, data) => {
 //   if (error) {
 //     console.log("It didn't work!", error);
 //     return;
 //   }
 //   console.log('Coord Data:', data);
 // });
+
+// const testCoords = { lat: 38.7936, lon: -90.7854 }
+// fetchISSFlyOverTimes(testCoords, testCallback)
+
+
+const passData = [ 
+  { duration: 569, risetime: 1604637656 },
+  { duration: 649, risetime: 1604643405 },
+  { duration: 562, risetime: 1604649292 },
+  { duration: 517, risetime: 1604655194 },
+  { duration: 603, risetime: 1604661021 } ];
+
+
+nextISSTimesForMyLocation(testData, testCallback )

@@ -10,6 +10,9 @@
  *   ie  {132.123.321.147}
  *
  * 23.233.53.153
+ * 
+ * // { lat: 38.7936, long: -90.7854 }
+ * // http://api.open-notify.org/iss-pass.json?lat=LAT&lon=LON
  */
 const request = require('request');
 
@@ -19,22 +22,24 @@ const fetchMyIP = function(callback) {
     if (error) {
       callback(error, null);
       return;
-    } else if (response.statusCode !== 200) {
+
+    }
+
+    if (response.statusCode !== 200) {
       const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
       callback(Error(msg), null);
       return;
-    } else {
-      const data = JSON.parse(body);
-      if (data.length !== 0) {
-        const ipAddr = data.ip;
-        // console.log(ipAddr)
-        callback(null, ipAddr);
-        return;
-      }
-      callback('REQUEST: No Data found', null);
+    }
+
+    const data = JSON.parse(body);
+    if (data.length !== 0) {
+      const ipAddr = data.ip;
+      // console.log(ipAddr)
+      callback(null, ipAddr);
       return;
 
     }
+    callback('REQUEST: No Data found', null);
   });
 };
 
@@ -56,7 +61,7 @@ const fetchCoordsByIP = function(ip, callback) {
       if (data.length !== 0) {
         const coords = {
           lat: data.latitude,
-          long: data.longitude
+          lon: data.longitude
         };
         callback(null, coords);
         return;
@@ -66,4 +71,45 @@ const fetchCoordsByIP = function(ip, callback) {
 };
 
 
-module.exports = { fetchMyIP, fetchCoordsByIP };
+
+const fetchISSFlyOverTimes = function(coords, callback) {
+  request(`http://api.open-notify.org/iss-pass.json?lat=${coords.lat}&lon=${coords.lon}`, (error, response, body) => {
+    if (error) {
+      callback(error, null);
+      return;
+    } else if (response.statusCode !== 200) {
+      const msg = `Status Code ${response.statusCode} when fetching IP. Response: ${body}`;
+      callback(Error(msg), null);
+      return;
+    }
+    // Array of objects
+    const passesData = JSON.parse(body).response;
+    // console.log('RAW', data)
+    callback(null, passesData);
+
+  });
+};
+
+
+const passData = [ 
+  { duration: 569, risetime: 1604637656 },
+  { duration: 649, risetime: 1604643405 },
+  { duration: 562, risetime: 1604649292 },
+  { duration: 517, risetime: 1604655194 },
+  { duration: 603, risetime: 1604661021 } ];
+
+
+const nextISSTimesForMyLocation = function(callback) {
+
+
+}
+
+
+
+
+module.exports = { 
+  fetchMyIP, 
+  fetchCoordsByIP, 
+  fetchISSFlyOverTimes,
+  nextISSTimesForMyLocation 
+};
