@@ -13,6 +13,7 @@
  * 
  * // { lat: 38.7936, long: -90.7854 }
  * // http://api.open-notify.org/iss-pass.json?lat=LAT&lon=LON
+ * * // http://api.open-notify.org/iss-pass.json?lat=38.7936&lon=-90.7854
  */
 const { Console } = require('console');
 const request = require('request');
@@ -92,27 +93,27 @@ const fetchISSFlyOverTimes = function (coords, callback) {
 };
 
 
-  const nextISSTimesForMyLocation = function(callback) {
-    fetchMyIP((error, ip) => {
+const nextISSTimesForMyLocation = function (callback) {
+  fetchMyIP((error, ip) => {
+    if (error) {
+      return callback(error, null);
+    }
+
+    fetchCoordsByIP(ip, (error, loc) => {
       if (error) {
         return callback(error, null);
       }
-  
-      fetchCoordsByIP(ip, (error, loc) => {
+
+      fetchISSFlyOverTimes(loc, (error, nextPasses) => {
         if (error) {
           return callback(error, null);
         }
-  
-        fetchISSFlyOverTimes(loc, (error, nextPasses) => {
-          if (error) {
-            return callback(error, null);
-          }
-  
-          callback(null, nextPasses);
-        });
+
+        callback(null, nextPasses);
       });
     });
-  };
+  });
+};
 
 
 
